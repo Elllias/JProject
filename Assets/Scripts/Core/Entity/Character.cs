@@ -39,13 +39,13 @@ namespace Core.Entity
         }
         
         [ClientRpc]
-        public void Move(Vector3 position)
+        public void RpcMove(Vector3 position)
         {
             _moveComponent.Move(position);
         }
 
         [ClientRpc]
-        public void RotateTo(Vector3 point)
+        public void RpcRotateTo(Vector3 point)
         {
             _rotateComponent.RotateTo(point);
         }

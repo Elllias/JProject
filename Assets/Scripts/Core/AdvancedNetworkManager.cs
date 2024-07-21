@@ -62,8 +62,8 @@ namespace Core
                 var x = Mathf.Cos(angleInRad) * RADIUS;
                 var z = Mathf.Sin(angleInRad) * RADIUS;
 
-                player.Move(new Vector3(x, 0, z));
-                player.RotateTo(_centerPoint);
+                player.RpcMove(new Vector3(x, 0, z));
+                player.RpcRotateTo(_centerPoint);
                 index += 1;
             }
         }
