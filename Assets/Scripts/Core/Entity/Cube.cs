@@ -28,14 +28,6 @@ namespace Core.Entity
         {
             _defaultMaterial = _renderer.sharedMaterial;
         }
-        
-        public void Initialize()
-        {
-            var initialPosition = GetStartPosition();
-            
-            _positionGenerator = new PerlinNoisePositionGenerator(initialPosition);
-            RpcMove(initialPosition);
-        }
 
         private void Update()
         {
@@ -59,18 +51,13 @@ namespace Core.Entity
                 _renderer.sharedMaterial = _defaultMaterial;
             }
         }
-
-        private Vector3 GetStartPosition()
+        
+        public void Initialize()
         {
-            var randomCirclePosition = Random.insideUnitCircle * _radius;
+            var initialPosition = GetStartPosition();
             
-            return new Vector3(randomCirclePosition.x, Random.Range(0, _height), randomCirclePosition.y);
-        }
-
-        [ClientRpc]
-        private void RpcMove(Vector3 position)
-        {
-            _moveComponent.Move(position);
+            _positionGenerator = new PerlinNoisePositionGenerator(initialPosition);
+            RpcMove(initialPosition);
         }
         
         [ClientRpc]
@@ -84,6 +71,19 @@ namespace Core.Entity
             var randomRotation = Quaternion.AngleAxis(randomAngle, Vector3.one.normalized);
             
             _rotateComponent.Rotate(lookRotation * randomRotation);
+        }
+        
+        [ClientRpc]
+        private void RpcMove(Vector3 position)
+        {
+            _moveComponent.Move(position);
+        }
+
+        private Vector3 GetStartPosition()
+        {
+            var randomCirclePosition = Random.insideUnitCircle * _radius;
+            
+            return new Vector3(randomCirclePosition.x, Random.Range(0, _height), randomCirclePosition.y);
         }
     }
 }
