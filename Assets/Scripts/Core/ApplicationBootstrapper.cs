@@ -9,6 +9,7 @@ namespace Core
     {
         [SerializeField] private PlayerScoreView _playerScoreView;
         [SerializeField] private AdvancedNetworkManager _networkManager;
+        [SerializeField] private InputHandler _inputHandler;
         
         [Header("Cube factory data")]
         [SerializeField] private Cube _cubePrefab;
@@ -25,6 +26,7 @@ namespace Core
             ServiceLocator.Bind(playerScoreViewController);
 
             ServiceLocator.Bind(_networkManager);
+            ServiceLocator.Bind(_inputHandler);
 
             var cubeFactory = new CubeFactory(_cubePrefab, _worldTransform);
             ServiceLocator.Bind(cubeFactory);
