@@ -61,7 +61,7 @@ namespace Core.Entity
         }
         
         [ClientRpc]
-        public void RpcRotateToWithRandomAngle(Vector3 targetPosition)
+        public void RpcInitializeRotate(Vector3 targetPosition)
         {
             var directionToPlayer = (targetPosition - transform.position).normalized;
             
