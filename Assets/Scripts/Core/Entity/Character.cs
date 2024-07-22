@@ -9,12 +9,12 @@ namespace Core.Entity
 {
     public class Character : NetworkBehaviour
     {
+        [Header("Components")]
         [SerializeField] private MoveComponent _moveComponent;
         [SerializeField] private RotateComponent _rotateComponent;
-        [SerializeField] private RotateComponent _cameraRotateComponent;
-
-        [SerializeField] private float _mouseSensitivity;
-        private RotateToMouseMechanic _rotateToMouseMechanic;
+        
+        [Header("Mechanics")]
+        [SerializeField] private RotateToMouseMechanic _rotateToMouseMechanic;
         
         private AdvancedNetworkManager _networkManager;
         private PlayerScoreViewController _scoreViewController;
@@ -25,7 +25,6 @@ namespace Core.Entity
             _networkManager = ServiceLocator.Resolve<AdvancedNetworkManager>();
             _inputHandler = ServiceLocator.Resolve<InputHandler>();
 
-            _rotateToMouseMechanic = new RotateToMouseMechanic(_cameraRotateComponent, _mouseSensitivity);
             _rotateToMouseMechanic.Initialize();
         }
 
