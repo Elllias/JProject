@@ -667,7 +667,6 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 789670475885512109, guid: 800062a2e8e1695409a0da714e9f540a, type: 3}
-  - {fileID: 3854536941001033917, guid: ddc6c910affbaf24fa8999415ebcf854, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -683,6 +682,7 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
+  _worldTransform: {fileID: 1728617011}
 --- !u!1 &1728617010
 GameObject:
   m_ObjectHideFlags: 0

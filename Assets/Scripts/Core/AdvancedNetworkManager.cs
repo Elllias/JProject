@@ -7,6 +7,9 @@ namespace Core
 {
     public class AdvancedNetworkManager : NetworkManager
     {
+        [Header("Advanced Server Data")]
+        [SerializeField] private Transform _worldTransform;
+        
         private const float RADIUS = 35f;
 
         private readonly Vector3 _centerPoint = Vector3.zero;
@@ -28,6 +31,7 @@ namespace Core
             conn.identity.AssignClientAuthority(conn);
 
             var player = conn.identity.gameObject.GetComponent<Character>();
+            player.transform.SetParent(_worldTransform);
 
             _players.Add(player);
             RepositionPlayers();
