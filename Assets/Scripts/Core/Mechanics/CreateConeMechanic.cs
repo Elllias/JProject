@@ -1,41 +1,22 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core.Mechanics
 {
+    [Serializable]
     public class CreateConeMechanic
     {
-        private readonly Renderer _renderer;
-        private readonly MeshFilter _meshFilter;
-        private readonly MeshCollider _meshCollider;
-        private readonly Transform _bodyTransform;
-        private readonly Material _material;
-        
-        private readonly float _length;
-        private readonly float _radius;
-        private readonly int _sections;
+        [SerializeField] private Renderer _renderer;
+        [SerializeField] private MeshFilter _meshFilter;
+        [SerializeField] private MeshCollider _meshCollider;
+        [SerializeField] private Transform _bodyTransform;
+        [SerializeField] private Material _material;
+        [SerializeField] private float _length;
+        [SerializeField] private float _radius;
+        [SerializeField] private int _sections;
 
         private float _step;
         private float _angle;
-
-        public CreateConeMechanic(
-            Renderer renderer,
-            MeshFilter meshFilter,
-            MeshCollider meshCollider,
-            Transform bodyTransform,
-            Material material,
-            float length,
-            float radius,
-            int sections)
-        {
-            _renderer = renderer;
-            _meshFilter = meshFilter;
-            _meshCollider = meshCollider;
-            _bodyTransform = bodyTransform;
-            _material = material;
-            _length = length;
-            _radius = radius;
-            _sections = sections;
-        }
 
         public void Initialize()
         {
