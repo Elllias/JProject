@@ -18,7 +18,7 @@ namespace Core.Mechanics
         private float _step;
         private float _angle;
 
-        public void Initialize()
+        public void Start()
         {
             if (_meshFilter == null)
             {

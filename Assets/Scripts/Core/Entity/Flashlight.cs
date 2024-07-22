@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Core.Components;
 using Core.Mechanics;
 using Core.UI.PlayerScore;
@@ -10,37 +9,30 @@ namespace Core.Entity
 {
     public class Flashlight : NetworkBehaviour
     {
-        private const string ON_TRIGGER_ENTER_FUNC_NAME = "OnTriggerExit";
-        
         [Header("Mechanics")]
         [SerializeField] private RotateToMouseMechanic _rotateToMouseMechanic;
         [SerializeField] private CreateConeMechanic _createConeMechanic;
-
-        [Header("Other")]
-        [SerializeField] private MeshCollider _meshCollider;
-        
-        private readonly HashSet<Collider> _colliders = new();
-        private PlayerScoreViewController _scoreViewController;
+        [SerializeField] private ScoreControlMechanic _scoreControlMechanic;
+        [SerializeField] private ColliderControlMechanic _colliderControlMechanic;
 
         public override void OnStopLocalPlayer()
         {
-            _scoreViewController.ResetScore();
-            _scoreViewController.HideView();
+            _scoreControlMechanic.Stop();
         }
-        
+
         private void Awake()
         {
-            _scoreViewController = ServiceLocator.Resolve<PlayerScoreViewController>();
+            _rotateToMouseMechanic.Initialize();
+            _scoreControlMechanic.Initialize();
         }
 
         private void Start()
         {
-            _createConeMechanic.Initialize();
+            _createConeMechanic.Start();
 
             if (!isLocalPlayer) return;
-
-            _rotateToMouseMechanic.Initialize();
-            _scoreViewController.ShowView();
+            
+            _scoreControlMechanic.Start();
         }
 
         private void Update()
@@ -52,34 +44,25 @@ namespace Core.Entity
 
         private void OnDestroy()
         {
-            if (!_meshCollider) return;
-
-            foreach (var otherCollider in _colliders)
-            {
-                if (!otherCollider) continue;
-
-                otherCollider.SendMessage(ON_TRIGGER_ENTER_FUNC_NAME, _meshCollider, SendMessageOptions.DontRequireReceiver);
-            }
-
-            _colliders.Clear();
+            _colliderControlMechanic.Stop();
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            _colliders.Add(other);
+            _colliderControlMechanic.OnTriggerEnter(other);
 
             if (!isLocalPlayer) return;
 
-            _scoreViewController.AddScore(1);
+            _scoreControlMechanic.OnTriggerEnter();
         }
 
         private void OnTriggerExit(Collider other)
         {
-            _colliders.Remove(other);
+            _colliderControlMechanic.OnTriggerExit(other);
 
             if (!isLocalPlayer) return;
 
-            _scoreViewController.RemoveScore(1);
+            _scoreControlMechanic.OnTriggerExit();
         }
     }
 }

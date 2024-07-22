@@ -473,4 +473,5 @@ MonoBehaviour:
     _length: 25
     _radius: 14.28
     _sections: 20
-  _meshCollider: {fileID: 8560594824517231558}
+  _colliderControlMechanic:
+    _collider: {fileID: 8560594824517231558}
