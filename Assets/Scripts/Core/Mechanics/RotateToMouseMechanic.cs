@@ -1,24 +1,20 @@
-﻿using Core.Components;
+﻿using System;
+using Core.Components;
 using UnityEngine;
 
 namespace Core.Mechanics
 {
+    [Serializable]
     public class RotateToMouseMechanic
     {
         private const float MAX_VERTICAL_OFFSET = 40f;
         private const float MAX_HORIZONTAL_OFFSET = 60f;
         
-        private readonly RotateComponent _rotateComponent;
-        private readonly float _mouseSensitivity;
+        [SerializeField] private RotateComponent _rotateComponent;
+        [SerializeField] private float _mouseSensitivity;
 
         private float _xRotation;
         private float _yRotation;
-
-        public RotateToMouseMechanic(RotateComponent rotateComponent, float mouseSensitivity)
-        {
-            _rotateComponent = rotateComponent;
-            _mouseSensitivity = mouseSensitivity;
-        }
         
         public void Initialize()
         {

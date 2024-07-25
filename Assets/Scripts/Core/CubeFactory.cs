@@ -22,7 +22,7 @@ namespace Core
             NetworkServer.Spawn(cube.gameObject);
 
             cube.Initialize();
-            cube.RpcRotateToWithRandomAngle(ownerPosition);
+            cube.RpcInitializeRotate(ownerPosition);
         }
     }
 }
