@@ -156,7 +156,7 @@ MonoBehaviour:
     _transform: {fileID: 7926533408459076678}
   _rotateComponent:
     _transform: {fileID: 7926533408459076678}
-  _radius: 20
+  _radius: 50
   _height: 5
   _renderer: {fileID: 3994189186692742262}
   _highlightMaterial: {fileID: 2100000, guid: 16005468deb921346b162b521726d58e, type: 2}

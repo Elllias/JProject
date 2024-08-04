@@ -257,14 +257,11 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _moveComponent:
-    _transform: {fileID: 5877898992940456785}
-  _rotateComponent:
-    _transform: {fileID: 5877898992940456785}
   _rotateToMouseMechanic:
-    _rotateComponent:
-      _transform: {fileID: 1048560964582573124}
-    _mouseSensitivity: 0.4
+    _mouseSensitivity: 1
+  _moveThroughInputMechanic:
+    _orientation: {fileID: 1048560964582573124}
+    _moveSpeed: 0.05
 --- !u!1 &4574432449923541139
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,10 +457,6 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _rotateToMouseMechanic:
-    _rotateComponent:
-      _transform: {fileID: 7175808960717633416}
-    _mouseSensitivity: 0.4
   _createConeMechanic:
     _renderer: {fileID: 8227009622795862969}
     _meshFilter: {fileID: 5611411884738615181}

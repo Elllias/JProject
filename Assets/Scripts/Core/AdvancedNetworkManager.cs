@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.Entity;
 using Mirror;
 using UnityEngine;
@@ -9,11 +10,6 @@ namespace Core
     {
         [Header("Advanced Server Data")]
         [SerializeField] private Transform _worldTransform;
-        
-        private const float RADIUS = 35f;
-
-        private readonly Vector3 _centerPoint = Vector3.zero;
-        private readonly HashSet<Character> _players = new();
 
         private CubeFactory _cubeFactory;
 
@@ -23,53 +19,23 @@ namespace Core
             
             _cubeFactory = ServiceLocator.Resolve<CubeFactory>();
         }
+
+        public override void OnServerConnect(NetworkConnectionToClient conn)
+        { 
+            _cubeFactory.StartCubeSpawn();
+        }
         
+        public override void OnServerDisconnect(NetworkConnectionToClient conn)
+        {
+            _cubeFactory.StopCubeSpawn();
+        }
+
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
             base.OnServerAddPlayer(conn);
 
             conn.identity.AssignClientAuthority(conn);
-
-            var player = conn.identity.gameObject.GetComponent<Character>();
-            player.transform.SetParent(_worldTransform);
-
-            _players.Add(player);
-            RepositionPlayers();
-        }
-
-        public override void OnServerDisconnect(NetworkConnectionToClient conn)
-        {
-            var player = conn.identity.gameObject.GetComponent<Character>();
-
-            _players.Remove(player);
-            RepositionPlayers();
-
-            base.OnServerDisconnect(conn);
-        }
-
-        public void SpawnCube(Vector3 position, Vector3 ownerPosition)
-        {
-            _cubeFactory.SpawnCube(position, ownerPosition);
-        }
-        
-        private void RepositionPlayers()
-        {
-            var playerCount = _players.Count;
-            if (playerCount == 0) return;
-
-            var angle = 360f / playerCount;
-            var index = 0;
-
-            foreach (var player in _players)
-            {
-                var angleInRad = index * angle * Mathf.Deg2Rad;
-                var x = Mathf.Cos(angleInRad) * RADIUS;
-                var z = Mathf.Sin(angleInRad) * RADIUS;
-
-                player.RpcMove(new Vector3(x, 0, z));
-                player.RpcRotateTo(_centerPoint);
-                index += 1;
-            }
+            conn.identity.transform.SetParent(_worldTransform);
         }
     }
 }
