@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Components;
+using Core.Entity;
 using UnityEngine;
 
 namespace Core.Mechanics
@@ -8,17 +9,17 @@ namespace Core.Mechanics
     public class RotateToMouseMechanic
     {
         private const float MAX_VERTICAL_OFFSET = 40f;
-        private const float MAX_HORIZONTAL_OFFSET = 60f;
+
+        public event Action<Quaternion> Rotated;
         
-        [SerializeField] private RotateComponent _rotateComponent;
         [SerializeField] private float _mouseSensitivity;
 
         private float _xRotation;
         private float _yRotation;
         
-        public void Initialize()
+        public void Initialize(Quaternion initialRotation)
         {
-            var currentRotation = _rotateComponent.GetCurrentRotation();
+            var currentRotation = initialRotation;
             
             _xRotation = currentRotation.x;
             _yRotation = currentRotation.y;
@@ -32,9 +33,8 @@ namespace Core.Mechanics
             _xRotation -= Input.GetAxis("Mouse Y") * _mouseSensitivity;
 
             _xRotation = Mathf.Clamp(_xRotation, -MAX_VERTICAL_OFFSET, MAX_VERTICAL_OFFSET);
-            _yRotation = Mathf.Clamp(_yRotation, -MAX_HORIZONTAL_OFFSET, MAX_HORIZONTAL_OFFSET);
             
-            _rotateComponent.Rotate(Quaternion.Euler(_xRotation, _yRotation, 0));
+            Rotated?.Invoke(Quaternion.Euler(_xRotation, _yRotation, 0));
         }
     }
 }

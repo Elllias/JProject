@@ -10,7 +10,6 @@ namespace Core.Entity
     public class Flashlight : NetworkBehaviour
     {
         [Header("Mechanics")]
-        [SerializeField] private RotateToMouseMechanic _rotateToMouseMechanic;
         [SerializeField] private CreateConeMechanic _createConeMechanic;
         [SerializeField] private ScoreControlMechanic _scoreControlMechanic;
         [SerializeField] private ColliderControlMechanic _colliderControlMechanic;
@@ -22,7 +21,6 @@ namespace Core.Entity
 
         private void Awake()
         {
-            _rotateToMouseMechanic.Initialize();
             _scoreControlMechanic.Initialize();
         }
 
@@ -33,13 +31,6 @@ namespace Core.Entity
             if (!isLocalPlayer) return;
             
             _scoreControlMechanic.Start();
-        }
-
-        private void Update()
-        {
-            if (!isLocalPlayer) return;
-
-            _rotateToMouseMechanic.Update();
         }
 
         private void OnDestroy()

@@ -1,64 +1,55 @@
-﻿using System;
-using Core.Components;
+﻿using Core.Components;
 using Core.Mechanics;
 using Core.UI.PlayerScore;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace Core.Entity
 {
     public class Character : NetworkBehaviour
     {
-        [Header("Components")]
-        [SerializeField] private MoveComponent _moveComponent;
-        [SerializeField] private RotateComponent _rotateComponent;
-        
         [Header("Mechanics")]
         [SerializeField] private RotateToMouseMechanic _rotateToMouseMechanic;
+        [SerializeField] private MoveThroughInputMechanic _moveThroughInputMechanic;
         
-        private AdvancedNetworkManager _networkManager;
         private PlayerScoreViewController _scoreViewController;
-        private InputHandler _inputHandler;
 
         private void Awake()
         {
-            _networkManager = ServiceLocator.Resolve<AdvancedNetworkManager>();
-            _inputHandler = ServiceLocator.Resolve<InputHandler>();
-
-            _rotateToMouseMechanic.Initialize();
+            _rotateToMouseMechanic.Initialize(transform.localRotation);
         }
 
         private void OnEnable()
         {
-            _inputHandler.CubeSpawnButtonPressed += CmdSpawnCube;
+            _moveThroughInputMechanic.Moved += MoveTo;
+            _rotateToMouseMechanic.Rotated += Rotate;
         }
 
         private void OnDisable()
         {
-            _inputHandler.CubeSpawnButtonPressed -= CmdSpawnCube;
+            _moveThroughInputMechanic.Moved -= MoveTo;
+            _rotateToMouseMechanic.Rotated -= Rotate;
         }
-
+        
         private void Update()
         {
+            if (!isLocalPlayer) return;
+            
             _rotateToMouseMechanic.Update();
+            _moveThroughInputMechanic.Update();
         }
-
-        [ClientRpc]
-        public void RpcMove(Vector3 position)
+        
+        [Command]
+        private void MoveTo(Vector3 direction)
         {
-            _moveComponent.Move(position);
-        }
-
-        [ClientRpc]
-        public void RpcRotateTo(Vector3 point)
-        {
-            _rotateComponent.RotateTo(point);
+            transform.position += direction;
         }
 
         [Command]
-        private void CmdSpawnCube()
+        public void Rotate(Quaternion rotation)
         {
-            _networkManager.SpawnCube(Vector3.zero, transform.position);
+            transform.localRotation = rotation;
         }
     }
 }
